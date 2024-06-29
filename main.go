@@ -3,7 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"game_development/usecase"
+	"game_development/drawing"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
@@ -50,8 +51,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		msg = fmt.Sprintf("%s - TPS: %0.2f", g.text, ebiten.ActualTPS())
 	)
 
-	usecaseText := usecase.NewTextUsecase(&text.DrawOptions{})
-	usecaseText.DrawSampleText(screen, x, msg, mplusFaceSource, normalFontSize)
+	drawing := drawing.NewDrawing(&text.DrawOptions{})
+	drawing.Info(screen, x, msg, mplusFaceSource, normalFontSize)
+	drawing.Text(screen, x, color.White, g.title, mplusFaceSource, normalFontSize)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
