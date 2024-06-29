@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"game_development/config"
 	"game_development/drawing"
 	"image/color"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
+	"github.com/spf13/viper"
 )
 
 type (
@@ -20,8 +22,8 @@ type (
 )
 
 const (
-	screenWidth  = 640
-	screenHeight = 480
+	screenWidth  = 1280
+	screenHeight = 720
 )
 
 var (
@@ -29,7 +31,7 @@ var (
 )
 
 func init() {
-	s, err := text.NewGoTextFaceSource(bytes.NewReader(fonts.MPlus1pRegular_ttf))
+	s, err := text.NewGoTextFaceSource(bytes.NewReader(fonts.ArcadeN_ttf))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,11 +63,12 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func main() {
+	config.ExecConfig()
 	ebiten.SetWindowSize(screenWidth, screenHeight)
-	ebiten.SetWindowTitle("Font (Ebitengine Demo)")
+	ebiten.SetWindowTitle(viper.GetString("game.title"))
 	if err := ebiten.RunGame(&Game{
-		title: "Game Development",
-		text:  "Welcome to Game Development",
+		title: viper.GetString("game.title"),
+		text:  "Welcome to Game",
 	}); err != nil {
 		log.Fatal(err)
 	}
