@@ -27,15 +27,15 @@ const (
 )
 
 var (
-	mplusFaceSource *text.GoTextFaceSource
+	arcadeFontText *text.GoTextFaceSource
 )
 
 func init() {
-	s, err := text.NewGoTextFaceSource(bytes.NewReader(fonts.ArcadeN_ttf))
+	arcadeText, err := text.NewGoTextFaceSource(bytes.NewReader(fonts.ArcadeN_ttf))
 	if err != nil {
 		log.Fatal(err)
 	}
-	mplusFaceSource = s
+	arcadeFontText = arcadeText
 }
 
 func (g *Game) Update() error {
@@ -54,8 +54,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	)
 
 	drawing := drawing.NewDrawing(&text.DrawOptions{})
-	drawing.Info(screen, x, msg, mplusFaceSource, normalFontSize)
-	drawing.Text(screen, x, color.White, g.title, mplusFaceSource, normalFontSize)
+	drawing.Upper(screen, x, msg, arcadeFontText, normalFontSize)
+	drawing.Middle(screen, x, color.White, g.title, arcadeFontText, normalFontSize)
+	drawing.Below(screen, x, color.White, "Main Lobby", arcadeFontText, normalFontSize)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
