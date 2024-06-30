@@ -33,7 +33,6 @@ func (tu *drawing) Info(screen *ebiten.Image, x int, msg string, mplusFaceSource
 }
 
 func (tu *drawing) Text(screen *ebiten.Image, x int, color color.Color, sampleText string, mplusFaceSource *text.GoTextFaceSource, fontSize float64) {
-	tu.op = &text.DrawOptions{}
 	tu.op.GeoM.Translate(float64(x), 60)
 	tu.op.ColorScale.ScaleWithColor(color)
 	text.Draw(screen, sampleText, &text.GoTextFace{
