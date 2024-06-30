@@ -33,8 +33,12 @@ func (tu *drawing) Upper(screen *ebiten.Image, x int, msg string, fontType *text
 	}, tu.op)
 }
 
+<<<<<<< HEAD
 func (tu *drawing) Middle(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64) {
 	tu.op = &text.DrawOptions{}
+=======
+func (tu *drawing) Text(screen *ebiten.Image, x int, color color.Color, sampleText string, mplusFaceSource *text.GoTextFaceSource, fontSize float64) {
+>>>>>>> ac7d246fc5e74161c744ab82b5ed9e20500405e7
 	tu.op.GeoM.Translate(float64(x), 60)
 	tu.op.ColorScale.ScaleWithColor(color)
 	text.Draw(screen, sampleText, &text.GoTextFace{
