@@ -9,9 +9,9 @@ import (
 
 type (
 	Drawing interface {
-		Upper(screen *ebiten.Image, x int, msg string, fontType *text.GoTextFaceSource, normalFontSize float64)
-		Middle(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64)
-		Below(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64)
+		UpperHeader(screen *ebiten.Image, x int, msg string, fontType *text.GoTextFaceSource, normalFontSize float64)
+		MiddleHeader(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64)
+		BelowHeader(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64)
 	}
 	drawing struct {
 		op *text.DrawOptions
@@ -24,7 +24,7 @@ func NewDrawing(op *text.DrawOptions) Drawing {
 	}
 }
 
-func (tu *drawing) Upper(screen *ebiten.Image, x int, msg string, fontType *text.GoTextFaceSource, fontSize float64) {
+func (tu *drawing) UpperHeader(screen *ebiten.Image, x int, msg string, fontType *text.GoTextFaceSource, fontSize float64) {
 	tu.op.GeoM.Translate(float64(x), 10)
 	tu.op.ColorScale.ScaleWithColor(color.White)
 	text.Draw(screen, msg, &text.GoTextFace{
@@ -33,12 +33,7 @@ func (tu *drawing) Upper(screen *ebiten.Image, x int, msg string, fontType *text
 	}, tu.op)
 }
 
-<<<<<<< HEAD
-func (tu *drawing) Middle(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64) {
-	tu.op = &text.DrawOptions{}
-=======
-func (tu *drawing) Text(screen *ebiten.Image, x int, color color.Color, sampleText string, mplusFaceSource *text.GoTextFaceSource, fontSize float64) {
->>>>>>> ac7d246fc5e74161c744ab82b5ed9e20500405e7
+func (tu *drawing) MiddleHeader(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64) {
 	tu.op.GeoM.Translate(float64(x), 60)
 	tu.op.ColorScale.ScaleWithColor(color)
 	text.Draw(screen, sampleText, &text.GoTextFace{
@@ -47,9 +42,8 @@ func (tu *drawing) Text(screen *ebiten.Image, x int, color color.Color, sampleTe
 	}, tu.op)
 }
 
-func (tu *drawing) Below(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64) {
-	tu.op = &text.DrawOptions{}
-	tu.op.GeoM.Translate(float64(x), 110)
+func (tu *drawing) BelowHeader(screen *ebiten.Image, x int, color color.Color, sampleText string, fontType *text.GoTextFaceSource, fontSize float64) {
+	tu.op.GeoM.Translate(float64(x), 60)
 	tu.op.ColorScale.ScaleWithColor(color)
 	text.Draw(screen, sampleText, &text.GoTextFace{
 		Source: fontType,

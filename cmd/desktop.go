@@ -54,9 +54,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	)
 
 	drawing := drawing.NewDrawing(&text.DrawOptions{})
-	drawing.Upper(screen, x, msg, arcadeFontText, normalFontSize)
-	drawing.Middle(screen, x, color.White, g.title, arcadeFontText, normalFontSize)
-	drawing.Below(screen, x, color.White, "Main Lobby", arcadeFontText, normalFontSize)
+	drawing.UpperHeader(screen, x, msg, arcadeFontText, normalFontSize)
+	drawing.MiddleHeader(screen, 0, color.White, g.title, arcadeFontText, normalFontSize)
+	drawing.BelowHeader(screen, 0, color.White, "Main Lobby", arcadeFontText, normalFontSize)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
