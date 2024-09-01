@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"game_development/config"
 	"game_development/drawing"
-	"image"
+	"game_development/helper"
 	"image/color"
 	"log"
-	"os"
 
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -58,22 +57,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(ballSprite, nil)
 }
 
-func loadImage(path string) (*ebiten.Image, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	img, _, err := image.Decode(file)
-	if err != nil {
-		return nil, err
-	}
-
-	ebitenImage := ebiten.NewImageFromImage(img)
-	return ebitenImage, nil
-}
-
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
@@ -85,7 +68,7 @@ func init() {
 	}
 	arcadeFontText = arcadeText
 
-	ballImg, err := loadImage("ball.png")
+	ballImg, err := helper.LoadImage("ball.png")
 	if err != nil {
 		panic("cannot get grub the fish eater image")
 	}
