@@ -54,7 +54,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText.MiddleHeader(screen, 0, color.White, g.title, arcadeFontText, normalFontSize)
 	drawText.BelowHeader(screen, 0, color.White, "Main Lobby", arcadeFontText, normalFontSize)
 
-	screen.DrawImage(ballSprite, nil)
+	drawSprite := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
+	drawSprite.Position(screen, ballSprite, float64(g.count), 500)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -68,9 +69,10 @@ func init() {
 	}
 	arcadeFontText = arcadeText
 
-	ballImg, err := helper.LoadImage("ball.png")
+	ballPath := "ball.png"
+	ballImg, err := helper.LoadImage(ballPath)
 	if err != nil {
-		panic("cannot get grub the fish eater image")
+		panic(fmt.Sprintf("cannot get %v", ballPath))
 	}
 	ballSprite = ballImg
 }
@@ -80,9 +82,10 @@ func main() {
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle(viper.GetString("game.title"))
 
+	gameTitle := viper.GetString("game.title")
 	if err := ebiten.RunGame(&Game{
-		title: viper.GetString("game.title"),
-		text:  "Welcome to Game",
+		title: gameTitle,
+		text:  fmt.Sprintf("Welcome to %s", gameTitle),
 	}); err != nil {
 		log.Fatal(err)
 	}
