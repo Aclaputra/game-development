@@ -69,8 +69,10 @@ func init() {
 	}
 	arcadeFontText = arcadeText
 
-	ballPath := "ball.png"
-	ballImg, err := helper.LoadImage(ballPath)
+	// ballPath := "ball.png"
+	ballPath := "assets\\lpcentry\\png\\walkcycle\\BODY_skeleton.png"
+	// ballImg, err := helper.LoadImage(ballPath)
+	ballImg, err := helper.LoadAndCropImage(ballPath, 15, 200, 50, 75)
 	if err != nil {
 		panic(fmt.Sprintf("cannot get %v", ballPath))
 	}
