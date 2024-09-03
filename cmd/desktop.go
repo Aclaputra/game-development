@@ -6,6 +6,7 @@ import (
 	"game_development/config"
 	"game_development/drawing"
 	"game_development/helper"
+	"game_development/model"
 	"image/color"
 	"log"
 
@@ -57,10 +58,16 @@ var (
 func (g *Game) Update() error {
 	g.countMovement++
 	g.timeCounter++
-	fmt.Println(g.countMovement)
 
 	skeletonFramePixel = skeletonStepFrames[skeletonFrameIndex]
-	skeletonImg, err := helper.LoadAndCropImage(SKELETON_SPRITE_PATH, skeletonFramePixel, skeletonDirectionFrames["east"], 50, 75)
+	reqLoadAndCropImage := &model.LoadAndCropImageRequest{
+		Path:   SKELETON_SPRITE_PATH,
+		X:      skeletonFramePixel,
+		Y:      skeletonDirectionFrames["east"],
+		Width:  50,
+		Height: 75,
+	}
+	skeletonImg, err := helper.LoadAndCropImage(reqLoadAndCropImage)
 	if err != nil {
 		return fmt.Errorf("cannot get %v", SKELETON_SPRITE_PATH)
 	}
@@ -72,10 +79,10 @@ func (g *Game) Update() error {
 	}
 
 	if skeletonFrameIndex >= len(skeletonStepFrames) {
-		skeletonFrameIndex = RESET_FROM_START
+		skeletonFrameIndex = RESET_FROM_START + 1
 	}
 
-	if g.countMovement >= 1000 {
+	if g.countMovement >= 900 {
 		g.countMovement = RESET_FROM_START
 	}
 

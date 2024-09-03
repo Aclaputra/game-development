@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"game_development/model"
 	"image"
 	"os"
 
@@ -23,9 +24,9 @@ func LoadImage(path string) (*ebiten.Image, error) {
 	return ebitenImage, nil
 }
 
-func LoadAndCropImage(path string, x, y, width, height int) (*ebiten.Image, error) {
+func LoadAndCropImage(req *model.LoadAndCropImageRequest) (*ebiten.Image, error) {
 	// Open the file at the given path
-	file, err := os.Open(path)
+	file, err := os.Open(req.Path)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +39,7 @@ func LoadAndCropImage(path string, x, y, width, height int) (*ebiten.Image, erro
 	}
 
 	// Define the rectangle for cropping
-	rect := image.Rect(x, y, x+width, y+height)
+	rect := image.Rect(req.X, req.Y, req.X+req.Width, req.Y+req.Height)
 
 	// Crop the image by sub-imaging it
 	croppedImg := img.(interface {
