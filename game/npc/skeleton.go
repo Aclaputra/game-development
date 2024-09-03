@@ -8,7 +8,18 @@ import (
 	"github.com/Aclaputra/game-development/model"
 )
 
-func Skeleton() error {
+type (
+	Skeleton interface {
+		Render() error
+	}
+	skeleton struct{}
+)
+
+func NewSkeleton() Skeleton {
+	return &skeleton{}
+}
+
+func (sk *skeleton) Render() error {
 	model.SkeletonFramePixel = model.SkeletonStepFrames[model.SkeletonFrameIndex]
 	reqLoadAndCropImage := &model.LoadAndCropImageRequest{
 		Path:   constant.SKELETON_SPRITE_PATH,

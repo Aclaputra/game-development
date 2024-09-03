@@ -30,7 +30,8 @@ func (g *Game) Update() error {
 	model.CountMovement++
 	model.TimeCounter++
 
-	if err := npc.Skeleton(); err != nil {
+	skeleton := npc.NewSkeleton()
+	if err := skeleton.Render(); err != nil {
 		return err
 	}
 
