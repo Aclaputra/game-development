@@ -39,15 +39,15 @@ var (
 	skeletonFrameIndex int
 	skeletonFramePixel int
 	skeletonStepFrames = []int{
-		0,   // ok
-		60,  // ok
-		125, // ok
-		185, // ok
-		250, // ok
-		310, // ok
-		375, // ok
-		440, // ok
-		505, // ok
+		16,  // ok
+		80,  // ok
+		144, // ok
+		208, // ok
+		272, // ok
+		336, // ok
+		400, // ok
+		464, // ok
+		528, // ok
 	}
 	skeletonDirectionFrames = map[string]int{
 		"east":  200,
@@ -56,16 +56,16 @@ var (
 )
 
 func (g *Game) Update() error {
-	g.countMovement++
+	// g.countMovement++
 	g.timeCounter++
 
 	skeletonFramePixel = skeletonStepFrames[skeletonFrameIndex]
 	reqLoadAndCropImage := &model.LoadAndCropImageRequest{
 		Path:   SKELETON_SPRITE_PATH,
 		X:      skeletonFramePixel,
-		Y:      skeletonDirectionFrames["east"],
-		Width:  50,
-		Height: 75,
+		Y:      skeletonDirectionFrames["south"],
+		Width:  30,
+		Height: 60,
 	}
 	skeletonImg, err := helper.LoadAndCropImage(reqLoadAndCropImage)
 	if err != nil {
@@ -73,7 +73,7 @@ func (g *Game) Update() error {
 	}
 	skeletonSprite = skeletonImg
 
-	if g.timeCounter >= 10 {
+	if g.timeCounter >= 200 {
 		skeletonFrameIndex++
 		g.timeCounter = RESET_FROM_START
 	}
