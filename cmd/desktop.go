@@ -29,24 +29,22 @@ type (
 )
 
 func (g *Game) Update() error {
-	model.CountMovement++
 	model.TimeCounter++
 
-	skeletonDirection := "east"
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	if len(g.keys) > 0 {
 		switch g.keys[0].String() {
 		case "W":
-			skeletonDirection = "north"
+			model.SkeletonDirection = "north"
 		case "A":
-			skeletonDirection = "west"
+			model.SkeletonDirection = "west"
 		case "S":
-			skeletonDirection = "south"
+			model.SkeletonDirection = "south"
 		case "D":
-			skeletonDirection = "east"
+			model.SkeletonDirection = "east"
 		}
 	}
-	skeleton := npc.NewSkeleton(skeletonDirection)
+	skeleton := npc.NewSkeleton(model.SkeletonDirection)
 	if err := skeleton.Render(); err != nil {
 		return err
 	}
@@ -70,7 +68,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText.BelowHeader(screen, 0, color.White, "Main Lobby", model.ArcadeFontText, normalFontSize)
 
 	drawSprite := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
-	drawSprite.Position(screen, model.SkeletonSprite, float64(model.CountMovement), 500)
+	drawSprite.Position(screen, model.SkeletonSprite, float64(model.CountMovementX), float64(model.CountMovementY))
 
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("Pixel at: %v", model.SkeletonFramePixel))
 }

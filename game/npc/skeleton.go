@@ -38,6 +38,17 @@ func (sk *skeleton) Render() error {
 	}
 	model.SkeletonSprite = skeletonImg
 
+	switch sk.skeletonDirection {
+	case "east":
+		model.CountMovementX++
+	case "south":
+		model.CountMovementY++
+	case "west":
+		model.CountMovementX--
+	case "north":
+		model.CountMovementY--
+	}
+
 	if reachedSomeTick := model.TimeCounter >= 5; reachedSomeTick {
 		model.SkeletonFrameIndex++
 		model.TimeCounter = constant.RESET_FROM_START
@@ -47,9 +58,9 @@ func (sk *skeleton) Render() error {
 		model.SkeletonFrameIndex = constant.RESET_FROM_START + 1
 	}
 
-	if skeletonReachSomeDistance := model.CountMovement >= 900; skeletonReachSomeDistance {
-		model.CountMovement = constant.RESET_FROM_START
-	}
+	// if skeletonReachSomeDistance := model.CountMovement >= 900; skeletonReachSomeDistance {
+	// 	model.CountMovement = constant.RESET_FROM_START
+	// }
 
 	return nil
 }

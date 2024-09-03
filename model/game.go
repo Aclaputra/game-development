@@ -27,6 +27,8 @@ var (
 		"south": 144,
 		"east":  208,
 	}
-	CountMovement int
-	TimeCounter   int
+	CountMovementX    = 500
+	CountMovementY    = 500
+	TimeCounter       int
+	SkeletonDirection string
 )
