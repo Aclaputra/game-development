@@ -29,13 +29,35 @@ const (
 )
 
 var (
-	arcadeFontText *text.GoTextFaceSource
-	ballSprite     *ebiten.Image
+	arcadeFontText      *text.GoTextFaceSource
+	skeletonSprite      *ebiten.Image
+	indexSkeletonCropAt int
 )
 
 func (g *Game) Update() error {
 	g.count++
 	fmt.Println(g.count)
+
+	skeletonPath := "assets\\lpcentry\\png\\walkcycle\\BODY_skeleton.png"
+	// 1. 15, 200
+	// 2. 60, 200
+	// 3. 125, 200
+	frames := []int{15, 60, 125}
+	skeletonImg, err := helper.LoadAndCropImage(skeletonPath, frames[indexSkeletonCropAt], 200, 50, 75)
+	if err != nil {
+		panic(fmt.Sprintf("cannot get %v", skeletonPath))
+	}
+	skeletonSprite = skeletonImg
+
+	if g.count >= 100 {
+		indexSkeletonCropAt++
+		g.count = 0
+	}
+
+	if indexSkeletonCropAt >= len(frames) {
+		indexSkeletonCropAt = 0
+	}
+
 	return nil
 }
 
@@ -55,7 +77,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText.BelowHeader(screen, 0, color.White, "Main Lobby", arcadeFontText, normalFontSize)
 
 	drawSprite := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
-	drawSprite.Position(screen, ballSprite, float64(g.count), 500)
+	drawSprite.Position(screen, skeletonSprite, float64(g.count), 500)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -69,14 +91,6 @@ func init() {
 	}
 	arcadeFontText = arcadeText
 
-	// ballPath := "ball.png"
-	ballPath := "assets\\lpcentry\\png\\walkcycle\\BODY_skeleton.png"
-	// ballImg, err := helper.LoadImage(ballPath)
-	ballImg, err := helper.LoadAndCropImage(ballPath, 15, 200, 50, 75)
-	if err != nil {
-		panic(fmt.Sprintf("cannot get %v", ballPath))
-	}
-	ballSprite = ballImg
 }
 
 func main() {
