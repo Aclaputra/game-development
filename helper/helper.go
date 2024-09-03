@@ -1,9 +1,10 @@
 package helper
 
 import (
-	"game_development/model"
 	"image"
 	"os"
+
+	"github.com/Aclaputra/game_development/model"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )

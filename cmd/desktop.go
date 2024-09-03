@@ -3,12 +3,13 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"game_development/config"
-	"game_development/drawing"
-	"game_development/helper"
-	"game_development/model"
 	"image/color"
 	"log"
+
+	"github.com/Aclaputra/game_development/config"
+	"github.com/Aclaputra/game_development/drawing"
+	"github.com/Aclaputra/game_development/helper"
+	"github.com/Aclaputra/game_development/model"
 
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -65,7 +66,7 @@ func (g *Game) Update() error {
 	reqLoadAndCropImage := &model.LoadAndCropImageRequest{
 		Path:   SKELETON_SPRITE_PATH,
 		X:      skeletonFramePixel,
-		Y:      skeletonDirectionFrames["west"],
+		Y:      skeletonDirectionFrames["east"],
 		Width:  30,
 		Height: 60,
 	}

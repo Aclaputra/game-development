@@ -1,4 +1,4 @@
-module game_development
+module github.com/Aclaputra/game_development
 
 go 1.22.4
 
