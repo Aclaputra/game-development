@@ -6,10 +6,10 @@ import (
 	"image/color"
 	"log"
 
-	"github.com/Aclaputra/game_development/config"
-	"github.com/Aclaputra/game_development/drawing"
-	"github.com/Aclaputra/game_development/helper"
-	"github.com/Aclaputra/game_development/model"
+	"github.com/Aclaputra/game-development/config"
+	"github.com/Aclaputra/game-development/drawing"
+	"github.com/Aclaputra/game-development/helper"
+	"github.com/Aclaputra/game-development/model"
 
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2"

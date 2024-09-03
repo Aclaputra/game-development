@@ -4,7 +4,7 @@ import (
 	"image"
 	"os"
 
-	"github.com/Aclaputra/game_development/model"
+	"github.com/Aclaputra/game-development/model"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
