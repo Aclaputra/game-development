@@ -12,11 +12,15 @@ type (
 	Skeleton interface {
 		Render() error
 	}
-	skeleton struct{}
+	skeleton struct {
+		skeletonDirection string
+	}
 )
 
-func NewSkeleton() Skeleton {
-	return &skeleton{}
+func NewSkeleton(direction string) Skeleton {
+	return &skeleton{
+		skeletonDirection: direction,
+	}
 }
 
 func (sk *skeleton) Render() error {
@@ -24,7 +28,7 @@ func (sk *skeleton) Render() error {
 	reqLoadAndCropImage := &model.LoadAndCropImageRequest{
 		Path:   constant.SKELETON_SPRITE_PATH,
 		X:      model.SkeletonFramePixel,
-		Y:      model.SkeletonDirectionFrames["east"],
+		Y:      model.SkeletonDirectionFrames[sk.skeletonDirection],
 		Width:  30,
 		Height: 60,
 	}

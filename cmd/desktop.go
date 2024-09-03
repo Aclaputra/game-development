@@ -15,6 +15,7 @@ import (
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"github.com/spf13/viper"
 )
@@ -23,6 +24,7 @@ type (
 	Game struct {
 		Title string
 		Text  string
+		keys  []ebiten.Key
 	}
 )
 
@@ -30,7 +32,21 @@ func (g *Game) Update() error {
 	model.CountMovement++
 	model.TimeCounter++
 
-	skeleton := npc.NewSkeleton()
+	skeletonDirection := "east"
+	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
+	if len(g.keys) > 0 {
+		switch g.keys[0].String() {
+		case "W":
+			skeletonDirection = "north"
+		case "A":
+			skeletonDirection = "west"
+		case "S":
+			skeletonDirection = "south"
+		case "D":
+			skeletonDirection = "east"
+		}
+	}
+	skeleton := npc.NewSkeleton(skeletonDirection)
 	if err := skeleton.Render(); err != nil {
 		return err
 	}
