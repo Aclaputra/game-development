@@ -26,9 +26,10 @@ type (
 )
 
 const (
-	SCREEN_WIDTH     = 1280
-	SCREEN_HEIGHT    = 720
-	RESET_FROM_START = 0
+	SCREEN_WIDTH         = 1280
+	SCREEN_HEIGHT        = 720
+	RESET_FROM_START     = 0
+	SKELETON_SPRITE_PATH = "assets\\lpcentry\\png\\walkcycle\\BODY_skeleton.png"
 )
 
 var (
@@ -36,6 +37,21 @@ var (
 	skeletonSprite     *ebiten.Image
 	skeletonFrameIndex int
 	skeletonFramePixel int
+	skeletonStepFrames = []int{
+		0,   // ok
+		60,  // ok
+		125, // ok
+		185, // ok
+		250, // ok
+		310, // ok
+		375, // ok
+		440, // ok
+		505, // ok
+	}
+	skeletonDirectionFrames = map[string]int{
+		"east":  200,
+		"south": 130,
+	}
 )
 
 func (g *Game) Update() error {
@@ -43,34 +59,19 @@ func (g *Game) Update() error {
 	g.timeCounter++
 	fmt.Println(g.countMovement)
 
-	var (
-		skeletonPath = "assets\\lpcentry\\png\\walkcycle\\BODY_skeleton.png"
-		frames       = []int{
-			15,  //
-			60,  //
-			125, //
-			200, //
-			250, //
-			325, //
-			400, //
-			450, //
-			520, //
-		}
-	)
-
-	skeletonFramePixel = frames[skeletonFrameIndex]
-	skeletonImg, err := helper.LoadAndCropImage(skeletonPath, skeletonFramePixel, 200, 50, 75)
+	skeletonFramePixel = skeletonStepFrames[skeletonFrameIndex]
+	skeletonImg, err := helper.LoadAndCropImage(SKELETON_SPRITE_PATH, skeletonFramePixel, skeletonDirectionFrames["east"], 50, 75)
 	if err != nil {
-		panic(fmt.Sprintf("cannot get %v", skeletonPath))
+		return fmt.Errorf("cannot get %v", SKELETON_SPRITE_PATH)
 	}
 	skeletonSprite = skeletonImg
 
-	if g.timeCounter >= 30 {
+	if g.timeCounter >= 10 {
 		skeletonFrameIndex++
 		g.timeCounter = RESET_FROM_START
 	}
 
-	if skeletonFrameIndex >= len(frames) {
+	if skeletonFrameIndex >= len(skeletonStepFrames) {
 		skeletonFrameIndex = RESET_FROM_START
 	}
 

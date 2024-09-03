@@ -18,6 +18,6 @@ func NewDrawSprite(op *ebiten.DrawImageOptions) DrawingSprite {
 }
 
 func (ds *drawingSprite) Position(screen *ebiten.Image, sprite *ebiten.Image, tx float64, ty float64) {
-	ds.op.GeoM.Translate(float64(tx), ty)
+	ds.op.GeoM.Translate(float64(tx)/2, ty)
 	screen.DrawImage(sprite, ds.op)
 }
