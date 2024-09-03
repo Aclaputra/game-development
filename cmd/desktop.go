@@ -9,7 +9,7 @@ import (
 	"github.com/Aclaputra/game-development/config"
 	"github.com/Aclaputra/game-development/constant"
 	"github.com/Aclaputra/game-development/drawing"
-	"github.com/Aclaputra/game-development/helper"
+	"github.com/Aclaputra/game-development/game/npc"
 	"github.com/Aclaputra/game-development/model"
 
 	"github.com/hajimehoshi/ebiten/examples/resources/fonts"
@@ -21,42 +21,17 @@ import (
 
 type (
 	Game struct {
-		Title         string
-		Text          string
-		CountMovement int
-		TimeCounter   int
+		Title string
+		Text  string
 	}
 )
 
 func (g *Game) Update() error {
-	g.CountMovement++
-	g.TimeCounter++
+	model.CountMovement++
+	model.TimeCounter++
 
-	model.SkeletonFramePixel = model.SkeletonStepFrames[model.SkeletonFrameIndex]
-	reqLoadAndCropImage := &model.LoadAndCropImageRequest{
-		Path:   constant.SKELETON_SPRITE_PATH,
-		X:      model.SkeletonFramePixel,
-		Y:      model.SkeletonDirectionFrames["east"],
-		Width:  30,
-		Height: 60,
-	}
-	skeletonImg, err := helper.LoadAndCropImage(reqLoadAndCropImage)
-	if err != nil {
-		return fmt.Errorf("cannot get %v", constant.SKELETON_SPRITE_PATH)
-	}
-	model.SkeletonSprite = skeletonImg
-
-	if reachedSomeTick := g.TimeCounter >= 5; reachedSomeTick {
-		model.SkeletonFrameIndex++
-		g.TimeCounter = constant.RESET_FROM_START
-	}
-
-	if skeletonReachedTheLastFrame := model.SkeletonFrameIndex >= len(model.SkeletonStepFrames); skeletonReachedTheLastFrame {
-		model.SkeletonFrameIndex = constant.RESET_FROM_START + 1
-	}
-
-	if skeletonReachSomeDistance := g.CountMovement >= 900; skeletonReachSomeDistance {
-		g.CountMovement = constant.RESET_FROM_START
+	if err := npc.Skeleton(); err != nil {
+		return err
 	}
 
 	return nil
@@ -78,7 +53,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText.BelowHeader(screen, 0, color.White, "Main Lobby", model.ArcadeFontText, normalFontSize)
 
 	drawSprite := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
-	drawSprite.Position(screen, model.SkeletonSprite, float64(g.CountMovement), 500)
+	drawSprite.Position(screen, model.SkeletonSprite, float64(model.CountMovement), 500)
 
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("Pixel at: %v", model.SkeletonFramePixel))
 }

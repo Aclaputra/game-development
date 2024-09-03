@@ -27,4 +27,6 @@ var (
 		"south": 144,
 		"east":  208,
 	}
+	CountMovement int
+	TimeCounter   int
 )
