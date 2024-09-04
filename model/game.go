@@ -8,6 +8,7 @@ import (
 var (
 	ArcadeFontText     *text.GoTextFaceSource
 	SkeletonSprite     *ebiten.Image
+	GameTileSprite     = make([]*ebiten.Image, 0)
 	SkeletonFrameIndex int
 	SkeletonFramePixel int
 	SkeletonStepFrames = []int{
@@ -27,8 +28,9 @@ var (
 		"south": 144,
 		"east":  208,
 	}
-	CountMovementX    = 500
-	CountMovementY    = 500
+	BasePosition      = 300
+	CountMovementX    = BasePosition
+	CountMovementY    = BasePosition
 	TimeCounter       int
 	SkeletonDirection string
 )

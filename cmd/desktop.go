@@ -9,6 +9,7 @@ import (
 	"github.com/Aclaputra/game-development/config"
 	"github.com/Aclaputra/game-development/constant"
 	"github.com/Aclaputra/game-development/drawing"
+	game_map "github.com/Aclaputra/game-development/game/map"
 	"github.com/Aclaputra/game-development/game/npc"
 	"github.com/Aclaputra/game-development/model"
 
@@ -67,8 +68,47 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText.MiddleHeader(screen, 0, color.White, g.Title, model.ArcadeFontText, normalFontSize)
 	drawText.BelowHeader(screen, 0, color.White, "Main Lobby", model.ArcadeFontText, normalFontSize)
 
-	drawSprite := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
-	drawSprite.Position(screen, model.SkeletonSprite, float64(model.CountMovementX), float64(model.CountMovementY))
+	gameMap := game_map.NewGameMap()
+	if err := gameMap.RenderTile(0, 0, 0); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(25, 0, 1); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(50, 0, 2); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(50, 25, 3); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(25, 25, 4); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(0, 25, 5); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(0, 50, 6); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(25, 50, 7); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	if err := gameMap.RenderTile(50, 50, 8); err != nil {
+		fmt.Printf("error rendering tile: %v", err.Error())
+	}
+	drawGameMap := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
+	drawGameMap.Position(screen, model.GameTileSprite[0], float64(model.BasePosition)-50, float64(model.BasePosition)-50)
+	drawGameMap.Position(screen, model.GameTileSprite[1], 50, 0)
+	drawGameMap.Position(screen, model.GameTileSprite[2], 50, 0)
+	drawGameMap.Position(screen, model.GameTileSprite[3], 0, 50)
+	drawGameMap.Position(screen, model.GameTileSprite[4], -50, 0)
+	drawGameMap.Position(screen, model.GameTileSprite[5], -50, 0)
+	drawGameMap.Position(screen, model.GameTileSprite[6], 0, 50)
+	drawGameMap.Position(screen, model.GameTileSprite[7], 50, 0)
+	drawGameMap.Position(screen, model.GameTileSprite[8], 50, 0)
+
+	drawWalkingSkeleton := drawing.NewDrawSprite(&ebiten.DrawImageOptions{})
+	drawWalkingSkeleton.Position(screen, model.SkeletonSprite, float64(model.CountMovementX), float64(model.CountMovementY))
 
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("Pixel at: %v", model.SkeletonFramePixel))
 }
