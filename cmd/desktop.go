@@ -7,6 +7,7 @@ import (
 	_ "image/png"
 	"log"
 
+	"github.com/Aclaputra/game-development/tilemap"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
@@ -19,9 +20,11 @@ var (
 
 type (
 	Game struct {
-		Player  *Player
-		enemies []*Enemy
-		potions []*Potion
+		Player       *Player
+		enemies      []*Enemy
+		potions      []*Potion
+		tilemapJSON  tilemap.TileMapJSON
+		tilemapImage *ebiten.Image
 	}
 	Sprite struct {
 		Img  *ebiten.Image
@@ -88,6 +91,33 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{120, 180, 255, 255})
 
 	opts := ebiten.DrawImageOptions{}
+
+	for _, layer := range g.tilemapJSON.Layers {
+		for index, id := range layer.Data {
+			x := index % layer.Width
+			y := index / layer.Width
+
+			x *= 16
+			y *= 16
+
+			srcX := (id - 1) % 22
+			srcY := (id - 1) / 22
+
+			srcX *= 16
+			srcY *= 16
+
+			// opts.GeoM.Scale(scale, scale)
+			opts.GeoM.Translate(float64(x), float64(y))
+
+			screen.DrawImage(
+				g.tilemapImage.SubImage(image.Rect(srcX, srcY, srcX+16, srcY+16)).(*ebiten.Image),
+				&opts,
+			)
+
+			opts.GeoM.Reset()
+		}
+	}
+
 	opts.GeoM.Scale(scale, scale)
 	opts.GeoM.Translate(g.Player.X, g.Player.Y)
 
@@ -141,8 +171,9 @@ func main() {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	var (
-		err                              error
-		playerImg, cavemenImg, potionImg *ebiten.Image
+		err                                            error
+		playerImg, cavemenImg, potionImg, tilemapImage *ebiten.Image
+		tilemapJSON                                    *tilemap.TileMapJSON
 	)
 
 	if playerImg, _, err = ebitenutil.NewImageFromFile("assets/ninjapack/Actor/Characters/NinjaGray/SpriteSheet.png"); err != nil {
@@ -152,6 +183,12 @@ func main() {
 		log.Fatal(err)
 	}
 	if potionImg, _, err = ebitenutil.NewImageFromFile("assets/ninjapack/Items/Potion/Heart.png"); err != nil {
+		log.Fatal(err)
+	}
+	if tilemapImage, _, err = ebitenutil.NewImageFromFile("assets/ninjapack/Backgrounds/Tilesets/TilesetFloor.png"); err != nil {
+		log.Fatal(err)
+	}
+	if tilemapJSON, err = tilemap.NewTileMapJSON("assets/map/spawn.json"); err != nil {
 		log.Fatal(err)
 	}
 
@@ -192,6 +229,8 @@ func main() {
 				100,
 			},
 		},
+		tilemapJSON:  *tilemapJSON,
+		tilemapImage: tilemapImage,
 	}
 
 	if err := ebiten.RunGame(game); err != nil {
