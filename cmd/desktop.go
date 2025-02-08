@@ -7,6 +7,7 @@ import (
 	_ "image/png"
 	"log"
 
+	"github.com/Aclaputra/game-development/entities"
 	"github.com/Aclaputra/game-development/tilemap"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -20,28 +21,11 @@ var (
 
 type (
 	Game struct {
-		Player       *Player
-		enemies      []*Enemy
-		potions      []*Potion
+		Player       *entities.Player
+		enemies      []*entities.Enemy
+		potions      []*entities.Potion
 		tilemapJSON  tilemap.TileMapJSON
 		tilemapImage *ebiten.Image
-	}
-	Sprite struct {
-		Img  *ebiten.Image
-		X, Y float64
-	}
-	Potion struct {
-		*Sprite
-		AmtHeal uint
-	}
-	// embedded struct
-	Enemy struct {
-		*Sprite
-		FollowsPlayer bool
-	}
-	Player struct {
-		*Sprite
-		Health uint
 	}
 )
 
@@ -92,11 +76,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	opts := ebiten.DrawImageOptions{}
 
+	// loop over the layers
 	for _, layer := range g.tilemapJSON.Layers {
+		// loop over the tiles in the layer data
 		for index, id := range layer.Data {
+			// get the tile position of the tile
 			x := index % layer.Width
 			y := index / layer.Width
 
+			// convert the tile posititon to pixel position
 			x *= 16
 			y *= 16
 
@@ -193,40 +181,40 @@ func main() {
 	}
 
 	game := &Game{
-		Player: &Player{
-			&Sprite{
+		Player: &entities.Player{
+			Sprite: &entities.Sprite{
 				Img: playerImg,
 				X:   300,
 				Y:   230,
 			},
-			1000,
+			Health: 1000,
 		},
-		enemies: []*Enemy{
+		enemies: []*entities.Enemy{
 			{
-				&Sprite{
+				Sprite: &entities.Sprite{
 					Img: cavemenImg,
 					X:   200,
 					Y:   100,
 				},
-				true,
+				FollowsPlayer: true,
 			},
 			{
-				&Sprite{
+				Sprite: &entities.Sprite{
 					Img: cavemenImg,
 					X:   250,
 					Y:   100,
 				},
-				false,
+				FollowsPlayer: false,
 			},
 		},
-		potions: []*Potion{
+		potions: []*entities.Potion{
 			{
-				&Sprite{
+				Sprite: &entities.Sprite{
 					Img: potionImg,
 					X:   320,
 					Y:   120,
 				},
-				100,
+				AmtHeal: 100,
 			},
 		},
 		tilemapJSON:  *tilemapJSON,
